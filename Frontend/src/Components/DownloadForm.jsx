@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function DownloadForm() {
+function DownloadForm({ toolName }) {
   const [url, setUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
   const [error, setError] = useState("");
 
-  const handleDownload = async () => {
+  const handleDownload = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios.get("http://localhost:5000/download", {
         params: { url },
@@ -35,34 +36,34 @@ function DownloadForm() {
 
   return (
     <div>
-      <input
-        type="text"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        placeholder="Enter Instagram Reel URL"
-        className="border border-gray-300 rounded px-4 py-2 mb-4"
-      />
-      <button
-        onClick={handleDownload}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Download
-      </button>
-      {error && <div className="text-red-500">{error}</div>}
-      {videoUrl && (
-        <div className="mt-4">
-          <video src={videoUrl} controls className="w-full" />
-          <a href={videoUrl} download>
-            Download Video
-          </a>
-          <button
-            onClick={handleClear}
-            className="bg-red-500 text-white px-4 py-2 rounded ml-2"
-          >
-            Clear
-          </button>
-        </div>
-      )}
+      <form onSubmit={handleDownload}>
+        <input
+          type="text"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder={`Enter ${toolName} Reel URL`}
+          className="border border-gray-300 rounded px-4 py-2 mb-4"
+        />
+        <button
+          // onSubmit={handleDownload}
+          className="bg-blue-500 text-white px-4 py-2 rounded">
+          Download
+        </button>
+        {error && <div className="text-red-500">{error}</div>}
+        {videoUrl && (
+          <div className="mt-4">
+            <video src={videoUrl} controls className="w-full" />
+            <a href={videoUrl} download>
+              Download Video
+            </a>
+            <button
+              onClick={handleClear}
+              className="bg-red-500 text-white px-4 py-2 rounded ml-2">
+              Clear
+            </button>
+          </div>
+        )}
+      </form>
     </div>
   );
 }

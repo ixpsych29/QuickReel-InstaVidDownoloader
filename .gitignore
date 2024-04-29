@@ -26,3 +26,4 @@ dist-ssr/
 # Dependency directories
 node_modules/
 package-lock.json
+.env
